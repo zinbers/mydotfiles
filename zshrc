@@ -149,4 +149,4 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 #export CLICOLOR=1
 #export LSCOLORS=Fxbxaxdxcxegedabagacad
 export PS4='+{$LINENO:${FUNCNAME[0]}}'
-. ~/powerline/powerline/bindings/zsh/powerline.zsh
+#. ~/powerline/powerline/bindings/zsh/powerline.zsh
