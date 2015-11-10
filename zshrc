@@ -144,9 +144,6 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 set -o vi
-alias ..='cd ..'
-alias ..ls='cd .. && ls'
-alias ls='ls -G'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
 #export CLICOLOR=1
