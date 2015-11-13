@@ -38,8 +38,8 @@ set cul "高亮光标所在行
 "set cuc
 set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
 set go=             " 不要图形按钮  
-colorscheme solarized     " 设置背景主题  
-"color ron     " 设置背景主题  
+"colorscheme solarized     " 设置背景主题  
+color ron     " 设置背景主题  
 "color torte     " 设置背景主题  
 "set guifont=Courier_New:h10:cANSI   " 设置字体  
 "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
@@ -191,6 +191,16 @@ set mouse=v
 nnoremap <F2> :g/^\s*$/d<CR> 
 "比较文件  
 nnoremap <C-F2> :vert diffsplit 
+let mapleader = ","
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>v V`]
+nnoremap <leader>w <C-w>v<C-w>l
+inoremap jj <ESC>
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 "nnoremap <Leader>fu :CtrlPFunky<Cr>
 "nnoremap <C-n> :CtrlPFunky<Cr>
 "列出当前目录文件  
@@ -275,7 +285,8 @@ if has("autocmd")
           \ endif
 endif
 "当打开vim且没有文件时自动打开NERDTree
-autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | Startify | endif
 " 只剩 NERDTree时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -310,6 +321,7 @@ set nobackup
 set noswapfile
 "搜索忽略大小写
 set ignorecase
+set smartcase
 
 
 
@@ -437,20 +449,23 @@ Bundle 'ctrlp-modified.vim'
 Bundle 'last_edit_marker.vim'
 Bundle 'synmark.vim'
 "Bundle 'Python-mode-klen'
-Bundle 'SQLComplete.vim'
-Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
+"Bundle 'SQLComplete.vim'
+"Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
 "Bundle 'JavaScript-Indent'
 "Bundle 'Better-Javascript-Indentation'
-Bundle 'jslint.vim'
+"Bundle 'jslint.vim'
 Bundle "pangloss/vim-javascript"
 Bundle 'Vim-Script-Updater'
 Bundle 'ctrlp.vim'
 Bundle 'tacahiroy/ctrlp-funky'
-Bundle 'jsbeautify'
+"Bundle 'jsbeautify'
 Bundle 'The-NERD-Commenter'
 "django
-Bundle 'django_templates.vim'
-Bundle 'Django-Projects'
+"Bundle 'django_templates.vim'
+"Bundle 'Django-Projects'
+Bundle 'rking/ag.vim'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'Shougo/unite.vim'
 
 "Bundle 'FredKSchott/CoVim'
 "Bundle 'djangojump'
@@ -463,7 +478,10 @@ Plugin 'vim-startify'
 Plugin 'xolox/vim-lua-inspect'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
+Plugin 'groenewege/vim-less'
+Plugin 'Tabular'
+Plugin 'airblade/vim-gitgutter'
 "Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 filetype plugin indent on     " required!
 "
@@ -484,4 +502,20 @@ nnoremap <C-S-left> :vertical resize -5<cr>
 nnoremap <C-S-down> :resize +5<cr>
 nnoremap <C-S-up> :resize -5<cr>
 nnoremap <C-S-right> :vertical resize +5<cr>
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+nnoremap ; :
 set rtp+=~/powerline/powerline/bindings/vim
+"let g:ackprg = 'ag --nogroup --nocolor --column'
+set selection=inclusive
+let g:startify_session_dir = '~/.vim/sessions'
+let g:startify_lists = ['files', 'dir', 'sessions', 'bookmarks']
+nnoremap <Leader>f :Unite -start-insert file<CR>
