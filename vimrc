@@ -38,8 +38,8 @@ set cul "高亮光标所在行
 "set cuc
 set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
 set go=             " 不要图形按钮  
-"colorscheme solarized     " 设置背景主题  
-color ron     " 设置背景主题  
+colorscheme solarized     " 设置背景主题  
+"color ron     " 设置背景主题  
 "color torte     " 设置背景主题  
 "set guifont=Courier_New:h10:cANSI   " 设置字体  
 "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
@@ -72,6 +72,7 @@ set expandtab
 set smarttab
 " 显示行号
 set rnu
+set number
 " 历史记录数
 set history=1000
 "搜索逐字符高亮
@@ -193,6 +194,7 @@ nnoremap <F2> :g/^\s*$/d<CR>
 nnoremap <C-F2> :vert diffsplit 
 let mapleader = ","
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 nnoremap <leader>v V`]
 nnoremap <leader>w <C-w>v<C-w>l
@@ -454,8 +456,8 @@ Bundle 'synmark.vim'
 "Bundle 'JavaScript-Indent'
 "Bundle 'Better-Javascript-Indentation'
 "Bundle 'jslint.vim'
-Bundle "pangloss/vim-javascript"
-Bundle 'Vim-Script-Updater'
+"Bundle "pangloss/vim-javascript"
+"Bundle 'Vim-Script-Updater'
 Bundle 'ctrlp.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 "Bundle 'jsbeautify'
@@ -466,7 +468,11 @@ Bundle 'The-NERD-Commenter'
 Bundle 'rking/ag.vim'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/unite.vim'
-
+Bundle 'Shougo/vimproc.vim'
+Bundle 'Shougo/vimshell.vim'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'tsukkee/unite-tag'
+Bundle 'easymotion/vim-easymotion'
 "Bundle 'FredKSchott/CoVim'
 "Bundle 'djangojump'
 " ...
@@ -478,10 +484,11 @@ Plugin 'vim-startify'
 Plugin 'xolox/vim-lua-inspect'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
 Plugin 'groenewege/vim-less'
 Plugin 'Tabular'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'benmills/vimux'
 "Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 filetype plugin indent on     " required!
 "
@@ -519,3 +526,77 @@ set selection=inclusive
 let g:startify_session_dir = '~/.vim/sessions'
 let g:startify_lists = ['files', 'dir', 'sessions', 'bookmarks']
 nnoremap <Leader>f :Unite -start-insert file<CR>
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> g* g*zz
+nnoremap <silent> g# g#zz
+nnoremap <silent> <C-o> <C-o>zz
+nnoremap <silent> <C-i> <C-i>zz
+" Use ag in unite grep source.
+if executable('ag')
+    " Use ag in unite grep source.
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+         \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+         \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+endif
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit
+nnoremap <leader>gb :Gblame
+nnoremap <leader>gv :Gitv<CR>
+nnoremap <leader>gp :Git push origin master<CR>
+nnoremap <leader>gu :Git pull -u<CR>
+vnoremap <leader>mf :MultipleCursorsFind 
+nnoremap <leader>vi :PluginInstall<CR>
+nnoremap <leader>vu :PluginUpdate<CR>
+nnoremap <leader>uf :Unite -buffer-name=files -start-insert file_rec/async:!<CR>
+"nnoremap <leader>uh :Unite neomru/file -buffer -focus<CR>
+nnoremap <leader>us :Unite grep:.<CR>
+nnoremap <leader>uw :Unite grep:.<CR><C-R>=expand("<cword>")<CR><CR>
+"nnoremap <leader>uo :Unite outline -focus<CR>
+nnoremap <leader>ub :Unite file buffer<CR>
+"let g:unite_source_history_yank_enable = 1
+"call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+"nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
+"nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
+"nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
+"nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
+"nnoremap <leader>e :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+      " Play nice with supertab
+    let b:SuperTabDisabled=1
+      "     " Enable navigation with control-j and control-k in insert mode
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+endfunction
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" " Jump to anywhere you want with minimal keystrokes, with just one key
+" binding.
+" " `s{char}{label}`
+nmap <leader>s <Plug>(easymotion-s)
+" " or
+" " `s{char}{char}{label}`
+" " Need one more keystroke, but on average, it may be more comfortable.
+nmap <leader>ss <Plug>(easymotion-s2)
+"
+"" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+" "
